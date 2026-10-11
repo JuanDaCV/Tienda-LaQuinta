@@ -37,7 +37,7 @@ Interfaz web ──POST──▶ Webhook ─▶ Buscar producto en inventario �
 
 El agregador existe por el caso 4: si el código no existe, la búsqueda no devuelve filas y el escenario se detendría en silencio. Con el agregador siempre llega un resultado al router, y el código inexistente se va a la ruta de respaldo.
 
-## Base de datos (Google Sheets: BD_LaQuinta)
+## Base de datos (Google Sheets: LaQuintaBD)
 
 | Pestaña | Columnas |
 |---|---|
@@ -92,7 +92,7 @@ Los cinco se ejecutan desde la interfaz, con los botones de casos de prueba.
 Al comienzo del script de `index.html`, en `CONFIG`:
 
 - `WEBHOOK_URL`: dirección del webhook de Make.
-- `SHEET_ID`: ID de la hoja BD_LaQuinta (compartida como «Cualquier persona con el enlace · Lector»).
+- `SHEET_ID`: ID de la hoja LaQuintaBD (compartida como «Cualquier persona con el enlace · Lector»).
 - `SOLICITANTES` y `DESTINOS`: las opciones de las listas.
 
 ## Archivos

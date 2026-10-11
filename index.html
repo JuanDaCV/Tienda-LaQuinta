@@ -418,7 +418,7 @@ tr.detalle td { background: #FAFCF6; white-space: normal; }
           <tbody id="cuerpo-historial"></tbody>
         </table>
       </div>
-      <p class="pie" id="pie-historial">Fuente: pestaña movimientos de la hoja BD_LaQuinta, la misma que escribe Make.</p>
+      <p class="pie" id="pie-historial">Fuente: pestaña movimientos de la hoja LaQuintaBD, la misma que escribe Make.</p>
     </div>
 
     <div class="panel">
@@ -439,12 +439,12 @@ tr.detalle td { background: #FAFCF6; white-space: normal; }
 <script>
 /* ================= Configuración ================= */
 const CONFIG = {
-  WEBHOOK_URL: "https://hook.us2.make.com/6stik41siglew3gyonh9cugfthejrhlp",
-  SHEET_ID: "1GGL9xTjKLNZF83XWBsWiJ2qZDOCN5oWw7gg8nEhIXN4",
+  WEBHOOK_URL: "https://hook.us2.make.com/35fiq0ec5lbx5bwza5uaj2qaa712twjb",
+  SHEET_ID: "1AiUhrOd-AiSd82GCfg8PMWsS7EyDLnExapsRtG-y7gk",
   HOJAS: { inventario: "inventario", movimientos: "movimientos", incidentes: "incidentes" },
-  CORREO_COMPRAS: "juanda.cv19@gmail.com",
+  CORREO_COMPRAS: "manolegal.pqrs@gmail.com",
   SOLICITANTES: [
-    { nombre: "Juan David Carabalí", cargo: "Auxiliar de bodega", correo: "juanda.cv19@gmail.com" },
+    { nombre: "Juan David Carabalí", cargo: "Auxiliar de bodega", correo: "manolegal.pqrs@gmail.com" },
     { nombre: "Juan David Carabalí", cargo: "Correo institucional", correo: "jdcarabali@estudiante.uniajc.edu.co" },
     { nombre: "José Luis", cargo: "Administrador de punto", correo: "jbestflim1@gmail.com" }
   ],
@@ -1071,7 +1071,7 @@ function pintarHistorial() {
       return [fila, detalle];
     }));
   }
-  $("#pie-historial").textContent = `Mostrando ${lista.length} de ${mov.length} movimientos. Fuente: pestaña movimientos de la hoja BD_LaQuinta, la misma que escribe Make.`;
+  $("#pie-historial").textContent = `Mostrando ${lista.length} de ${mov.length} movimientos. Fuente: pestaña movimientos de la hoja LaQuintaBD, la misma que escribe Make.`;
 
   // Incidentes
   const inc = estado.incidentes.slice().reverse();
