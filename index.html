@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Quinta · Despachos de bodega</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --hoja: #1E4D2B;
+  --hoja-2: #2D6A3E;
+  --albahaca: #3C8D3F;
+  --lima: #A7C957;
+  --lima-suave: #E4EFD3;
+  --mandarina: #E8891C;
+  --mandarina-txt: #8A4B00;
+  --mandarina-suave: #FCEBD3;
+  --tomate: #C8372D;
+  --tomate-suave: #F8DDD9;
+  --fondo: #EEF3E8;
+  --papel: #FBFDF7;
+  --tinta: #1F2A1C;
+  --gris: #5E6B58;
+  --linea: #D5DFCB;
+  --sombra: 0 1px 0 rgba(30, 77, 43, .08), 0 10px 28px -16px rgba(30, 77, 43, .35);
+  --titulo: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  --texto: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fondo); color: var(--tinta); font-family: var(--texto); font-size: 16px; line-height: 1.5; }
+h1, h2, h3 { font-family: var(--titulo); line-height: 1.15; margin: 0; letter-spacing: -0.01em; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--mandarina); outline-offset: 2px; }
+.solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Cabecera ---------- */
+.cabecera {
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 22px, transparent 22px 44px),
+    var(--hoja);
+  color: #F3F8EC;
+}
+.cabecera-dentro { max-width: 1180px; margin: 0 auto; padding: 22px 20px 0; }
+.cabecera-fila { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.marca { display: flex; align-items: center; gap: 14px; }
+.marca-logo { width: 52px; height: 52px; border-radius: 50%; background: var(--lima); display: grid; place-items: center; flex: none; }
+.marca h1 { font-size: 1.7rem; font-weight: 800; }
+.marca p { margin: 2px 0 0; color: #C9DDBF; font-size: .95rem; }
+.estados { display: flex; gap: 8px; flex-wrap: wrap; }
+.estado { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.1); font-size: .85rem; color: #E6F0DD; }
+.estado::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--lima); }
+.estado.apagado::before { background: var(--mandarina); }
+.pestanas { display: flex; gap: 6px; margin-top: 22px; overflow-x: auto; }
+.pestana { border: 0; background: transparent; color: #D8E8CF; padding: 12px 18px 14px; border-radius: 14px 14px 0 0; cursor: pointer; font-weight: 600; white-space: nowrap; }
+.pestana:hover { background: rgba(255,255,255,.08); }
+.pestana[aria-selected="true"] { background: var(--fondo); color: var(--hoja); }
+
+/* ---------- Estructura ---------- */
+main { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
+.vista[hidden] { display: none; }
+.encabezado-vista { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.encabezado-vista h2 { font-size: 1.9rem; font-weight: 800; color: var(--hoja); }
+.encabezado-vista p { margin: 4px 0 0; color: var(--gris); max-width: 62ch; }
+.panel { background: var(--papel); border: 1px solid var(--linea); border-radius: 18px; padding: 22px; box-shadow: var(--sombra); }
+.panel + .panel { margin-top: 20px; }
+.panel h3 { font-size: 1.2rem; font-weight: 700; color: var(--hoja); margin-bottom: 14px; }
+.registro { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px; align-items: start; }
+@media (max-width: 900px) { .registro { grid-template-columns: 1fr; } }
+
+/* ---------- Formulario ---------- */
+.casos { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--lima-suave); margin-bottom: 18px; }
+.casos span { font-size: .9rem; color: var(--hoja-2); font-weight: 600; margin-right: 4px; }
+.caso { border: 1px solid #BFD4A8; background: #fff; border-radius: 999px; padding: 5px 12px; font-size: .88rem; cursor: pointer; }
+.caso:hover { border-color: var(--albahaca); }
+.caso b { color: var(--hoja); }
+.campos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+.campo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.campo.ancho { grid-column: 1 / -1; }
+@media (max-width: 620px) { .campos { grid-template-columns: 1fr; } }
+.campo label, .campo legend { font-weight: 600; font-size: .95rem; }
+.ayuda { font-size: .85rem; color: var(--gris); }
+select, input[type="text"], input[type="number"] {
+  width: 100%; padding: 11px 12px; border: 1.5px solid #C3D2B4; border-radius: 10px; background: #fff; min-height: 46px;
+}
+select {
+  appearance: none; padding-right: 40px; cursor: pointer;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%232D6A3E' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;
+}
+select:hover, input:hover { border-color: var(--albahaca); }
+.cantidad { display: flex; align-items: stretch; border: 1.5px solid #C3D2B4; border-radius: 10px; background: #fff; overflow: hidden; }
+.cantidad button { width: 46px; border: 0; background: var(--lima-suave); color: var(--hoja); font-size: 1.3rem; font-weight: 700; cursor: pointer; }
+.cantidad button:hover { background: #D3E6BC; }
+.cantidad input { border: 0; border-radius: 0; text-align: center; font-weight: 700; font-size: 1.1rem; min-height: 44px; }
+.cantidad .unidad { display: flex; align-items: center; padding: 0 12px; color: var(--gris); font-size: .9rem; background: #F6F9F1; }
+fieldset.campo { border: 0; padding: 0; margin: 0; }
+.segmentos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+@media (max-width: 520px) { .segmentos { grid-template-columns: 1fr; } }
+.segmentos input { position: absolute; opacity: 0; pointer-events: none; }
+.segmentos label { display: block; text-align: center; padding: 11px 10px; border: 1.5px solid #C3D2B4; border-radius: 10px; background: #fff; cursor: pointer; font-weight: 600; font-size: .95rem; }
+.segmentos input:checked + label { background: var(--hoja); border-color: var(--hoja); color: #fff; }
+.segmentos input:focus-visible + label { outline: 3px solid var(--mandarina); outline-offset: 2px; }
+.correo-destino { font-size: .88rem; color: var(--hoja-2); }
+.acciones { display: flex; gap: 12px; align-items: center; margin-top: 22px; flex-wrap: wrap; }
+.boton { border: 0; border-radius: 12px; padding: 13px 22px; font-weight: 700; cursor: pointer; }
+.boton-principal { background: var(--mandarina); color: #2B1700; font-size: 1.05rem; box-shadow: 0 3px 0 #B5660C; }
+.boton-principal:hover { background: #F09A35; }
+.boton-principal:active { transform: translateY(2px); box-shadow: 0 1px 0 #B5660C; }
+.boton-principal:disabled { opacity: .6; cursor: progress; }
+.boton-suave { background: #fff; border: 1.5px solid #C3D2B4; color: var(--hoja); }
+.boton-suave:hover { border-color: var(--albahaca); }
+.aviso-form { color: var(--tomate); font-weight: 600; font-size: .92rem; }
+
+/* ---------- Vista previa y regla de rutas ---------- */
+.previa-vacia { color: var(--gris); margin: 0; }
+.ficha { display: flex; justify-content: space-between; gap: 12px; align-items: start; margin-bottom: 14px; }
+.ficha h4 { margin: 0; font-family: var(--titulo); font-size: 1.15rem; }
+.ficha .codigo { color: var(--gris); font-size: .9rem; }
+.datos-ficha { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+.dato { background: #fff; border: 1px solid var(--linea); border-radius: 10px; padding: 8px 10px; }
+.dato span { display: block; font-size: .8rem; color: var(--gris); }
+.dato b { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.regla { margin: 6px 0 10px; }
+.regla-pista { position: relative; height: 18px; border-radius: 999px; display: flex; overflow: visible; }
+.zona { height: 100%; }
+.zona:first-child { border-radius: 999px 0 0 999px; }
+.zona:last-of-type { border-radius: 0 999px 999px 0; }
+.zona-rech { background: #E9A39C; }
+.zona-alerta { background: #F5C27F; }
+.zona-ok { background: #A9D18E; }
+.marca-saldo { position: absolute; top: -9px; width: 6px; height: 36px; margin-left: -3px; border-radius: 3px; background: var(--tinta); box-shadow: 0 0 0 3px var(--papel); transition: left .35s ease; }
+.marca-hoy { position: absolute; top: 3px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #fff; border: 3px solid var(--hoja-2); }
+.regla-ejes { position: relative; height: 22px; margin-top: 8px; font-size: .78rem; color: var(--gris); }
+.regla-ejes span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.leyenda { display: grid; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; font-size: .88rem; }
+.leyenda li { display: flex; align-items: center; gap: 8px; }
+.leyenda i { width: 14px; height: 14px; border-radius: 4px; flex: none; }
+.veredicto { margin-top: 16px; padding: 12px 14px; border-radius: 12px; font-weight: 600; }
+.veredicto small { display: block; font-weight: 400; color: var(--gris); margin-top: 4px; }
+.tono-ok { background: var(--lima-suave); color: var(--hoja); }
+.tono-alerta { background: var(--mandarina-suave); color: var(--mandarina-txt); }
+.tono-rech { background: var(--tomate-suave); color: #8E2119; }
+.tono-nov { background: #E8EBE3; color: #3E4A39; }
+
+/* ---------- Recorrido en Make ---------- */
+.recorrido { list-style: none; margin: 0; padding: 4px 0 0; display: grid; grid-template-columns: repeat(6, minmax(110px, 1fr)); gap: 0; overflow-x: auto; }
+.recorrido li { position: relative; text-align: center; padding: 0 6px; font-size: .9rem; color: var(--gris); }
+.recorrido li::before { content: ""; position: absolute; top: 15px; left: -50%; width: 100%; height: 4px; background: var(--linea); z-index: 0; }
+.recorrido li:first-child::before { display: none; }
+.recorrido .punto { position: relative; z-index: 1; display: grid; place-items: center; width: 34px; height: 34px; margin: 0 auto 8px; border-radius: 50%; background: #fff; border: 3px solid var(--linea); font-weight: 700; font-size: .85rem; }
+.recorrido li.hecho { color: var(--hoja); }
+.recorrido li.hecho .punto { background: var(--albahaca); border-color: var(--albahaca); color: #fff; }
+.recorrido li.hecho::before { background: var(--albahaca); }
+.recorrido li.activo .punto { border-color: var(--mandarina); animation: latido 1s ease-in-out infinite; }
+.recorrido li.fallo .punto { background: var(--tomate); border-color: var(--tomate); color: #fff; }
+.recorrido li.fin-ok .punto { background: var(--albahaca); border-color: var(--albahaca); color: #fff; width: 42px; height: 42px; margin-top: -4px; }
+.recorrido li.fin-alerta .punto { background: var(--mandarina); border-color: var(--mandarina); color: #2B1700; width: 42px; height: 42px; margin-top: -4px; }
+.recorrido li.fin-rech .punto { background: var(--tomate); border-color: var(--tomate); color: #fff; width: 42px; height: 42px; margin-top: -4px; }
+.recorrido li.fin-nov .punto { background: #6B7765; border-color: #6B7765; color: #fff; width: 42px; height: 42px; margin-top: -4px; }
+.recorrido li[class*="fin-"] { color: var(--tinta); font-weight: 700; }
+@keyframes latido { 50% { box-shadow: 0 0 0 8px rgba(232, 137, 28, .25); } }
+
+/* ---------- Resultado ---------- */
+.resultado { border-radius: 18px; padding: 22px; margin-top: 20px; border: 2px solid; }
+.resultado[hidden] { display: none; }
+.resultado.tono-ok { border-color: var(--albahaca); }
+.resultado.tono-alerta { border-color: var(--mandarina); }
+.resultado.tono-rech { border-color: var(--tomate); }
+.resultado.tono-nov { border-color: #8A9683; }
+.resultado h3 { font-size: 1.6rem; font-weight: 800; color: inherit; margin-bottom: 4px; }
+.resultado .mensaje { margin: 0 0 16px; color: var(--tinta); }
+.cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.cifra { background: rgba(255,255,255,.7); border-radius: 12px; padding: 10px 12px; color: var(--tinta); }
+.cifra span { display: block; font-size: .8rem; color: var(--gris); }
+.cifra b { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.lista-acciones { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--tinta); }
+.lista-acciones li { display: flex; gap: 10px; align-items: start; }
+.lista-acciones svg { flex: none; margin-top: 2px; }
+
+/* ---------- Tablas ---------- */
+.tabla-caja { overflow-x: auto; border: 1px solid var(--linea); border-radius: 12px; background: #fff; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #E5ECDD; white-space: nowrap; }
+th { background: #F2F6EC; color: var(--hoja); font-weight: 700; position: sticky; top: 0; }
+tbody tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.fila-mov { cursor: pointer; }
+tr.fila-mov:hover td { background: #F7FAF2; }
+tr.fila-mov[aria-expanded="true"] td { background: var(--lima-suave); }
+tr.detalle td { background: #FAFCF6; white-space: normal; }
+.detalle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px 18px; padding: 6px 2px; }
+.detalle-grid div span { display: block; font-size: .78rem; color: var(--gris); }
+.etiqueta { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .82rem; font-weight: 700; }
+.vacio { padding: 26px; text-align: center; color: var(--gris); }
+
+/* ---------- Historial ---------- */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+@media (max-width: 900px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .kpis { grid-template-columns: 1fr; } }
+.kpi { background: var(--papel); border: 1px solid var(--linea); border-radius: 16px; padding: 16px 18px; box-shadow: var(--sombra); }
+.kpi .nombre { font-weight: 600; font-size: .92rem; color: var(--hoja-2); }
+.kpi .valor { font-family: var(--titulo); font-size: 2.1rem; font-weight: 800; color: var(--hoja); font-variant-numeric: tabular-nums; }
+.kpi .nota { font-size: .82rem; color: var(--gris); }
+.graficos { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+@media (max-width: 800px) { .graficos { grid-template-columns: 1fr; } }
+.barras { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.barras li { display: grid; grid-template-columns: minmax(110px, 38%) 1fr auto; gap: 10px; align-items: center; font-size: .9rem; }
+.barras .pista { height: 14px; background: #EEF3E8; border-radius: 999px; overflow: hidden; }
+.barras .relleno { height: 100%; background: var(--albahaca); border-radius: 999px; }
+.barras b { font-variant-numeric: tabular-nums; }
+.filtros { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto auto; gap: 12px; align-items: end; margin-bottom: 14px; }
+@media (max-width: 1000px) { .filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pie { font-size: .85rem; color: var(--gris); margin: 10px 0 0; }
+
+/* ---------- Inventario ---------- */
+.cajones { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.cajon { background: var(--papel); border: 1px solid var(--linea); border-radius: 16px; padding: 16px; box-shadow: var(--sombra); display: flex; flex-direction: column; gap: 10px; border-top: 6px solid var(--albahaca); }
+.cajon.bajo { border-top-color: var(--mandarina); }
+.cajon.agotado { border-top-color: var(--tomate); }
+.cajon h4 { margin: 0; font-family: var(--titulo); font-size: 1.08rem; }
+.cajon .cod { font-size: .85rem; color: var(--gris); }
+.cajon .stock { display: flex; align-items: baseline; gap: 6px; }
+.cajon .stock b { font-family: var(--titulo); font-size: 2.2rem; font-weight: 800; color: var(--hoja); line-height: 1; }
+.medidor { position: relative; height: 12px; background: #EEF3E8; border-radius: 999px; }
+.medidor .nivel { height: 100%; border-radius: 999px; background: var(--albahaca); }
+.cajon.bajo .medidor .nivel { background: var(--mandarina); }
+.cajon.agotado .medidor .nivel { background: var(--tomate); }
+.medidor .minimo { position: absolute; top: -4px; width: 3px; height: 20px; background: var(--tinta); border-radius: 2px; }
+.cajon .pie-cajon { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .88rem; color: var(--gris); }
+.resumen { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }
+.resumen div { display: flex; flex-direction: column; }
+.resumen b { font-family: var(--titulo); font-size: 1.6rem; color: var(--hoja); }
+.resumen span { font-size: .88rem; color: var(--gris); }
+
+.pie-pagina { text-align: center; color: var(--gris); font-size: .85rem; padding: 0 20px 32px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="cabecera-dentro">
+    <div class="cabecera-fila">
+      <div class="marca">
+        <div class="marca-logo" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 32 32"><path d="M26 5C14 5 6 11 6 21c0 2 .4 3.7 1 5 2-6 7-11 14-13-6 3-10 8-11 14 1 .3 2 .5 3 .5 10 0 14-9 13-22.5z" fill="#1E4D2B"/></svg>
+        </div>
+        <div>
+          <h1>La Quinta</h1>
+          <p>Despachos de bodega validados contra el inventario</p>
+        </div>
+      </div>
+      <div class="estados" id="estados"></div>
+    </div>
+    <nav class="pestanas" role="tablist" aria-label="Secciones">
+      <button class="pestana" role="tab" data-vista="registro" aria-selected="true" aria-controls="vista-registro" id="tab-registro">Registrar despacho</button>
+      <button class="pestana" role="tab" data-vista="inventario" aria-selected="false" aria-controls="vista-inventario" id="tab-inventario" tabindex="-1">Inventario</button>
+      <button class="pestana" role="tab" data-vista="historial" aria-selected="false" aria-controls="vista-historial" id="tab-historial" tabindex="-1">Historial de movimientos</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ===================== REGISTRO ===================== -->
+  <section class="vista" id="vista-registro" role="tabpanel" aria-labelledby="tab-registro">
+    <div class="encabezado-vista">
+      <div>
+        <h2>Nuevo despacho</h2>
+        <p>Elige el producto y la cantidad. Make consulta el inventario, calcula el saldo y decide si el despacho sale.</p>
+      </div>
+    </div>
+
+    <div class="registro">
+      <form class="panel" id="form-despacho" novalidate>
+        <div class="casos" role="group" aria-label="Casos de prueba">
+          <span>Casos de prueba</span>
+          <button type="button" class="caso" data-codigo="INS-0101" data-cantidad="10"><b>C1</b> Harina × 10</button>
+          <button type="button" class="caso" data-codigo="INS-0102" data-cantidad="5"><b>C2</b> Azúcar × 5</button>
+          <button type="button" class="caso" data-codigo="INS-0407" data-cantidad="5"><b>C3</b> Pollo × 5</button>
+          <button type="button" class="caso" data-codigo="INS-9999" data-cantidad="3"><b>C4</b> INS-9999 × 3</button>
+          <button type="button" class="caso" data-codigo="INS-0204" data-cantidad="7"><b>C5</b> Arroz × 7</button>
+        </div>
+
+        <div class="campos">
+          <div class="campo">
+            <label for="solicitante">Solicitante</label>
+            <select id="solicitante" required></select>
+            <span class="correo-destino" id="correo-solicitante"></span>
+          </div>
+          <div class="campo">
+            <label for="destino">Destino</label>
+            <select id="destino" required></select>
+          </div>
+
+          <div class="campo ancho">
+            <label for="producto">Producto</label>
+            <select id="producto" required></select>
+          </div>
+          <div class="campo ancho" id="campo-otro" hidden>
+            <label for="otro-codigo">Código que no está en la lista</label>
+            <input id="otro-codigo" type="text" placeholder="INS-9999" autocomplete="off">
+            <span class="ayuda">Sirve para probar la ruta de respaldo: Make no lo va a encontrar y lo registra como incidente.</span>
+          </div>
+
+          <div class="campo">
+            <label for="cantidad">Cantidad</label>
+            <div class="cantidad">
+              <button type="button" id="menos" aria-label="Restar una unidad">−</button>
+              <input id="cantidad" type="number" min="1" step="1" value="1" inputmode="numeric">
+              <button type="button" id="mas" aria-label="Sumar una unidad">+</button>
+              <span class="unidad" id="unidad">unidades</span>
+            </div>
+          </div>
+          <fieldset class="campo">
+            <legend>Motivo</legend>
+            <div class="segmentos">
+              <input type="radio" name="motivo" id="m-despacho" value="despacho" checked><label for="m-despacho">Despacho</label>
+              <input type="radio" name="motivo" id="m-traslado" value="traslado entre sedes"><label for="m-traslado">Traslado</label>
+              <input type="radio" name="motivo" id="m-averia" value="avería"><label for="m-averia">Avería</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="acciones">
+          <button type="submit" class="boton boton-principal" id="btn-registrar">Registrar despacho</button>
+          <button type="button" class="boton boton-suave" id="btn-limpiar">Limpiar</button>
+          <span class="aviso-form" id="aviso-form" role="alert"></span>
+        </div>
+      </form>
+
+      <aside class="panel" aria-labelledby="titulo-previa">
+        <h3 id="titulo-previa">Cómo quedaría el inventario</h3>
+        <div id="previa"></div>
+        <ul class="leyenda" aria-label="Reglas del router">
+          <li><i style="background:#A9D18E"></i>Saldo igual o mayor al mínimo: aprobado</li>
+          <li><i style="background:#F5C27F"></i>Saldo desde 0 hasta antes del mínimo: aprobado con alerta a compras</li>
+          <li><i style="background:#E9A39C"></i>Saldo menor que 0: rechazado, no se escribe nada</li>
+          <li><i style="background:#C9CFC3"></i>Código que no existe: ruta de respaldo e incidente</li>
+        </ul>
+      </aside>
+    </div>
+
+    <section class="panel" aria-labelledby="titulo-recorrido" style="margin-top:20px">
+      <h3 id="titulo-recorrido">Recorrido del último pedido en Make</h3>
+      <ol class="recorrido" id="recorrido">
+        <li data-paso="0"><span class="punto">1</span>Interfaz</li>
+        <li data-paso="1"><span class="punto">2</span>Webhook</li>
+        <li data-paso="2"><span class="punto">3</span>Buscar en inventario</li>
+        <li data-paso="3"><span class="punto">4</span>Calcular saldo</li>
+        <li data-paso="4"><span class="punto">5</span>Router</li>
+        <li data-paso="5"><span class="punto">6</span><span id="recorrido-fin">Ruta</span></li>
+      </ol>
+      <div class="resultado" id="resultado" hidden aria-live="polite"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="titulo-sesion">
+      <h3 id="titulo-sesion">Respuestas de esta sesión</h3>
+      <div class="tabla-caja">
+        <table>
+          <thead><tr><th>Hora</th><th>Producto</th><th class="num">Cantidad</th><th>Respuesta</th><th class="num">Saldo</th><th class="num">Tiempo</th></tr></thead>
+          <tbody id="cuerpo-sesion"><tr><td colspan="6" class="vacio">Todavía no has registrado despachos en esta sesión.</td></tr></tbody>
+        </table>
+      </div>
+      <p class="pie">Los rechazos no quedan en la hoja: el enunciado exige que no dejen rastro. Se ven aquí mientras la página esté abierta y en el historial de ejecuciones de Make.</p>
+    </section>
+  </section>
+
+  <!-- ===================== INVENTARIO ===================== -->
+  <section class="vista" id="vista-inventario" role="tabpanel" aria-labelledby="tab-inventario" hidden>
+    <div class="encabezado-vista">
+      <div>
+        <h2>Inventario de la bodega</h2>
+        <p>Existencias actuales de la pestaña inventario. La raya negra marca el mínimo de cada producto.</p>
+      </div>
+      <button class="boton boton-suave" id="btn-recargar-inv" type="button">Actualizar inventario</button>
+    </div>
+    <div class="resumen" id="resumen-inv"></div>
+    <div class="cajones" id="cajones"></div>
+  </section>
+
+  <!-- ===================== HISTORIAL ===================== -->
+  <section class="vista" id="vista-historial" role="tabpanel" aria-labelledby="tab-historial" hidden>
+    <div class="encabezado-vista">
+      <div>
+        <h2>Historial de movimientos</h2>
+        <p>Cada fila es un despacho que salió de la bodega. Toca una fila para ver todos sus datos.</p>
+      </div>
+      <button class="boton boton-suave" id="btn-recargar-hist" type="button">Actualizar historial</button>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="nombre">Movimientos registrados</div><div class="valor" id="k-total">–</div><div class="nota" id="k-total-nota">filas de la tabla movimientos</div></div>
+      <div class="kpi"><div class="nombre">I1 · Tiempo de respuesta</div><div class="valor" id="k-tiempo">–</div><div class="nota" id="k-tiempo-nota">antes eran 43 min entre pedir y saber si había</div></div>
+      <div class="kpi"><div class="nombre">I2 · Despachos bajo el mínimo</div><div class="valor" id="k-alerta">–</div><div class="nota">aprobados con alerta ÷ aprobados × 100</div></div>
+      <div class="kpi"><div class="nombre">Valor despachado</div><div class="valor" id="k-valor">–</div><div class="nota" id="k-valor-nota">cantidad × costo unitario</div></div>
+    </div>
+
+    <div class="graficos">
+      <div class="panel"><h3>Unidades despachadas por producto</h3><ul class="barras" id="g-productos"></ul></div>
+      <div class="panel"><h3>Movimientos por motivo</h3><ul class="barras" id="g-motivos"></ul></div>
+    </div>
+
+    <div class="panel">
+      <div class="filtros">
+        <div class="campo"><label for="f-resultado">Resultado</label>
+          <select id="f-resultado"><option value="">Todos</option><option value="APROBADO">Aprobado</option><option value="APROBADO_ALERTA">Aprobado con alerta</option></select></div>
+        <div class="campo"><label for="f-producto">Producto</label><select id="f-producto"><option value="">Todos</option></select></div>
+        <div class="campo"><label for="f-motivo">Motivo</label>
+          <select id="f-motivo"><option value="">Todos</option><option value="despacho">Despacho</option><option value="traslado entre sedes">Traslado entre sedes</option><option value="avería">Avería</option></select></div>
+        <div class="campo"><label for="f-texto">Solicitante o destino</label><input id="f-texto" type="text" placeholder="Buscar"></div>
+        <button class="boton boton-suave" id="btn-limpiar-filtros" type="button">Quitar filtros</button>
+        <button class="boton boton-suave" id="btn-exportar" type="button">Descargar CSV</button>
+      </div>
+      <div class="tabla-caja">
+        <table>
+          <thead><tr><th>Fecha y hora</th><th>Movimiento</th><th>Producto</th><th class="num">Cantidad</th><th class="num">Saldo</th><th>Destino</th><th>Motivo</th><th>Solicitante</th><th>Resultado</th></tr></thead>
+          <tbody id="cuerpo-historial"></tbody>
+        </table>
+      </div>
+      <p class="pie" id="pie-historial">Fuente: pestaña movimientos de la hoja BD_LaQuinta, la misma que escribe Make.</p>
+    </div>
+
+    <div class="panel">
+      <h3>Incidentes de la ruta de respaldo</h3>
+      <div class="tabla-caja">
+        <table>
+          <thead><tr><th>Fecha y hora</th><th>Código pedido</th><th class="num">Cantidad</th><th>Solicitante</th><th>Destino</th><th>Detalle</th></tr></thead>
+          <tbody id="cuerpo-incidentes"></tbody>
+        </table>
+      </div>
+      <p class="pie">Pedidos con un código que no existe en el inventario. No tocan existencias, pero quedan registrados para que no se pierdan en silencio.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="pie-pagina">Distribuidora La Quinta S.A.S., Cali. Parcial 1, Seminario de Actualización, UNIAJC 2026-2.</footer>
+
+<script>
+/* ================= Configuración ================= */
+const CONFIG = {
+  WEBHOOK_URL: "https://hook.us2.make.com/6stik41siglew3gyonh9cugfthejrhlp",
+  SHEET_ID: "1GGL9xTjKLNZF83XWBsWiJ2qZDOCN5oWw7gg8nEhIXN4",
+  HOJAS: { inventario: "inventario", movimientos: "movimientos", incidentes: "incidentes" },
+  CORREO_COMPRAS: "juanda.cv19@gmail.com",
+  SOLICITANTES: [
+    { nombre: "Juan David Carabalí", cargo: "Auxiliar de bodega", correo: "juanda.cv19@gmail.com" },
+    { nombre: "Juan David Carabalí", cargo: "Correo institucional", correo: "jdcarabali@estudiante.uniajc.edu.co" },
+    { nombre: "José Luis", cargo: "Administrador de punto", correo: "jbestflim1@gmail.com" }
+  ],
+  DESTINOS: [
+    "Restaurante El Fogón, Cali (Granada)",
+    "Cafetería La Ermita, Cali (Centro)",
+    "Asadero Los Farallones, Jamundí",
+    "Panadería Santa Mónica, Palmira",
+    "Comedor universitario, Cali (Sur)",
+    "Sede Norte La Quinta (traslado)",
+    "Sede Sur La Quinta (traslado)"
+  ]
+};
+
+/* Inventario del enunciado: solo se usa si la hoja no responde. */
+const INVENTARIO_BASE = [
+  ["INS-0101", "Harina de trigo x 25 kg", "bulto", 48, 15, "$92.000"],
+  ["INS-0102", "Azúcar refinada x 50 kg", "bulto", 12, 10, "$148.000"],
+  ["INS-0203", "Aceite vegetal x 20 L", "caja", 30, 12, "$186.000"],
+  ["INS-0204", "Arroz blanco x 25 kg", "bulto", 7, 20, "$112.000"],
+  ["INS-0305", "Servilletas x 1000 u", "paca", 120, 40, "$38.000"],
+  ["INS-0306", "Vasos desechables 7 oz x 2500", "caja", 25, 15, "$95.000"],
+  ["INS-0407", "Pollo congelado x 10 kg", "caja", 3, 8, "$215.000"],
+  ["INS-0408", "Queso mozzarella x 5 kg", "bloque", 60, 20, "$94.000"]
+].map(([codigo, producto, unidad, existencias, minimo, costo]) =>
+  ({ codigo, producto, unidad, existencias, minimo, costo: numero(costo) }));
+
+const RUTAS = {
+  APROBADO: { titulo: "Despacho aprobado", corto: "Aprobado", tono: "ok", acciones: [
+    ["si", "Descontó las unidades en la misma fila del inventario"],
+    ["si", "Registró el movimiento en el historial"],
+    ["si", "Envía la confirmación al correo del solicitante"] ] },
+  APROBADO_ALERTA: { titulo: "Aprobado con alerta", corto: "Con alerta", tono: "alerta", acciones: [
+    ["si", "Descontó las unidades en la misma fila del inventario"],
+    ["si", "Registró el movimiento en el historial"],
+    ["si", "Avisa a compras por correo para que reponga"],
+    ["si", "Envía la confirmación al correo del solicitante"] ] },
+  RECHAZADO: { titulo: "Despacho rechazado", corto: "Rechazado", tono: "rech", acciones: [
+    ["no", "No descontó nada del inventario"],
+    ["no", "No registró ningún movimiento"],
+    ["no", "No envió confirmación"] ] },
+  NO_VALIDO: { titulo: "Código no válido", corto: "Respaldo", tono: "nov", acciones: [
+    ["si", "Registró el incidente en la pestaña incidentes"],
+    ["si", "Avisa a compras por correo"],
+    ["no", "No tocó el inventario"] ] }
+};
+
+const estado = {
+  inventario: INVENTARIO_BASE.slice(),
+  inventarioEnVivo: false,
+  movimientos: [],
+  incidentes: [],
+  historialViejo: true,
+  sesion: []
+};
+
+/* ================= Utilidades ================= */
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+function el(tag, props, ...hijos) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v === null || v === undefined || v === false) continue;
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const h of hijos.flat()) {
+    if (h === null || h === undefined || h === false) continue;
+    n.append(h instanceof Node ? h : document.createTextNode(String(h)));
+  }
+  return n;
+}
+
+function numero(v) {
+  if (typeof v === "number") return v;
+  const t = String(v === undefined || v === null ? "" : v).replace(/[^\d-]/g, "");
+  return t === "" || t === "-" ? NaN : Number(t);
+}
+const fmtEntero = new Intl.NumberFormat("es-CO");
+const fmtPesos = new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
+const entero = (n) => Number.isFinite(n) ? fmtEntero.format(n) : "–";
+const pesos = (n) => Number.isFinite(n) ? fmtPesos.format(n) : "–";
+const plural = (u, n) => !u ? "" : (n === 1 ? u : u + "s");
+
+function formatoBogota(fecha) {
+  const p = {};
+  new Intl.DateTimeFormat("en-CA", { timeZone: "America/Bogota", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })
+    .formatToParts(fecha).forEach((x) => { p[x.type] = x.value; });
+  return `${p.year}-${p.month}-${p.day} ${p.hour === "24" ? "00" : p.hour}:${p.minute}:${p.second}`;
+}
+
+function leerFecha(texto) {
+  if (!texto) return null;
+  const t = String(texto).trim();
+  let m = t.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{1,2}):(\d{2}):(\d{2})/);
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]);
+  m = t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})[ ,]+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (m) return new Date(+m[3], +m[2] - 1, +m[1], +m[4], +m[5], +(m[6] || 0));
+  return null;
+}
+
+function mostrarFecha(texto) {
+  const d = leerFecha(texto);
+  if (!d) return texto || "";
+  const dos = (n) => String(n).padStart(2, "0");
+  return `${dos(d.getDate())}/${dos(d.getMonth() + 1)}/${d.getFullYear()} ${dos(d.getHours())}:${dos(d.getMinutes())}:${dos(d.getSeconds())}`;
+}
+
+function leerCSV(texto) {
+  const filas = [];
+  let fila = [], campo = "", comillas = false;
+  for (let i = 0; i < texto.length; i++) {
+    const c = texto[i];
+    if (comillas) {
+      if (c === '"' && texto[i + 1] === '"') { campo += '"'; i++; }
+      else if (c === '"') comillas = false;
+      else campo += c;
+    } else if (c === '"') comillas = true;
+    else if (c === ",") { fila.push(campo); campo = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && texto[i + 1] === "\n") i++;
+      fila.push(campo); campo = "";
+      if (fila.some((x) => x !== "")) filas.push(fila);
+      fila = [];
+    } else campo += c;
+  }
+  if (campo !== "" || fila.length) { fila.push(campo); if (fila.some((x) => x !== "")) filas.push(fila); }
+  return filas;
+}
+
+async function leerHoja(nombre, columnaEsperada) {
+  const url = "https://docs.google.com/spreadsheets/d/" + encodeURIComponent(CONFIG.SHEET_ID) +
+    "/gviz/tq?tqx=out:csv&headers=1&sheet=" + encodeURIComponent(nombre) + "&_=" + Date.now();
+  const r = await fetch(url, { cache: "no-store" });
+  if (!r.ok) throw new Error("La hoja respondió " + r.status);
+  const filas = leerCSV(await r.text());
+  if (!filas.length) return [];
+  const cab = filas[0].map((h) => h.trim());
+  if (columnaEsperada && !cab.includes(columnaEsperada)) {
+    // Si la pestaña no existe, Google devuelve la primera: se detecta por las columnas.
+    if (filas.length === 1 && cab.every((h) => h === "")) return [];
+    throw new Error(`La pestaña «${nombre}» no tiene la columna ${columnaEsperada}`);
+  }
+  return filas.slice(1)
+    .map((f) => Object.fromEntries(cab.map((h, i) => [h, (f[i] || "").trim()])))
+    .filter((o) => Object.values(o).some((v) => v !== ""));
+}
+
+function icono(tipo) {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("width", "20"); svg.setAttribute("height", "20"); svg.setAttribute("viewBox", "0 0 20 20");
+  svg.setAttribute("aria-hidden", "true");
+  const c = document.createElementNS(ns, "circle");
+  c.setAttribute("cx", "10"); c.setAttribute("cy", "10"); c.setAttribute("r", "10");
+  c.setAttribute("fill", tipo === "si" ? "#3C8D3F" : "#C8372D");
+  const p = document.createElementNS(ns, "path");
+  p.setAttribute("d", tipo === "si" ? "M5.5 10.5l3 3 6-7" : "M6.5 6.5l7 7M13.5 6.5l-7 7");
+  p.setAttribute("stroke", "#fff"); p.setAttribute("stroke-width", "2.2"); p.setAttribute("fill", "none");
+  p.setAttribute("stroke-linecap", "round");
+  svg.append(c, p);
+  return svg;
+}
+
+function etiquetaResultado(res) {
+  const r = RUTAS[res];
+  return el("span", { class: "etiqueta tono-" + (r ? r.tono : "nov"), text: r ? r.titulo : (res || "Sin dato") });
+}
+
+/* ================= Estado de conexión ================= */
+function pintarEstados() {
+  const caja = $("#estados");
+  caja.replaceChildren(
+    el("span", { class: "estado" + (CONFIG.WEBHOOK_URL ? "" : " apagado"), text: CONFIG.WEBHOOK_URL ? "Make conectado" : "Falta el webhook de Make" }),
+    el("span", { class: "estado" + (estado.inventarioEnVivo ? "" : " apagado"), text: estado.inventarioEnVivo ? "Inventario en vivo" : "Inventario de referencia" })
+  );
+}
+
+/* ================= Pestañas ================= */
+function mostrarVista(nombre) {
+  $$(".pestana").forEach((b) => {
+    const activa = b.dataset.vista === nombre;
+    b.setAttribute("aria-selected", String(activa));
+    b.tabIndex = activa ? 0 : -1;
+  });
+  $$(".vista").forEach((v) => { v.hidden = v.id !== "vista-" + nombre; });
+  if (nombre === "inventario") cargarInventario().then(pintarInventario);
+  if (nombre === "historial") cargarHistorial(false);
+}
+$$(".pestana").forEach((b) => b.addEventListener("click", () => mostrarVista(b.dataset.vista)));
+$(".pestanas").addEventListener("keydown", (e) => {
+  if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+  const tabs = $$(".pestana");
+  const i = tabs.indexOf(document.activeElement);
+  if (i < 0) return;
+  const sig = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+  sig.focus(); mostrarVista(sig.dataset.vista);
+});
+
+/* ================= Inventario ================= */
+async function cargarInventario() {
+  if (!CONFIG.SHEET_ID) { estado.inventarioEnVivo = false; pintarEstados(); return; }
+  try {
+    const filas = await leerHoja(CONFIG.HOJAS.inventario, "existencias");
+    const lista = filas.map((f) => ({
+      codigo: f.codigo, producto: f.producto, unidad: f.unidad,
+      existencias: numero(f.existencias), minimo: numero(f.minimo), costo: numero(f.costo_unitario)
+    })).filter((p) => p.codigo);
+    if (lista.length) { estado.inventario = lista; estado.inventarioEnVivo = true; }
+  } catch (err) {
+    estado.inventarioEnVivo = false;
+  }
+  pintarEstados();
+  llenarProductos();
+  actualizarPrevia();
+}
+
+function pintarInventario() {
+  const inv = estado.inventario;
+  const bajos = inv.filter((p) => p.existencias < p.minimo).length;
+  const valor = inv.reduce((s, p) => s + (Number.isFinite(p.costo) ? p.existencias * p.costo : 0), 0);
+  $("#resumen-inv").replaceChildren(
+    el("div", {}, el("b", { text: inv.length }), el("span", { text: "productos" })),
+    el("div", {}, el("b", { text: bajos }), el("span", { text: "bajo el mínimo" })),
+    el("div", {}, el("b", { text: pesos(valor) }), el("span", { text: "valor en bodega" })),
+    el("div", {}, el("b", { text: estado.inventarioEnVivo ? "En vivo" : "Referencia" }), el("span", { text: estado.inventarioEnVivo ? "leído de la hoja" : "la hoja no respondió" }))
+  );
+  $("#cajones").replaceChildren(...inv.map((p) => {
+    const agotado = p.existencias <= 0, bajo = !agotado && p.existencias < p.minimo;
+    const escala = Math.max(p.existencias, p.minimo * 2, 1);
+    const estadoTxt = agotado ? "Agotado" : bajo ? "Bajo el mínimo" : "Disponible";
+    return el("article", { class: "cajon" + (agotado ? " agotado" : bajo ? " bajo" : "") },
+      el("div", {}, el("h4", { text: p.producto }), el("span", { class: "cod", text: p.codigo })),
+      el("div", { class: "stock" }, el("b", { text: entero(p.existencias) }), el("span", { text: plural(p.unidad, p.existencias) })),
+      el("div", { class: "medidor", role: "img", "aria-label": `${p.existencias} de mínimo ${p.minimo}` },
+        el("div", { class: "nivel", style: `width:${Math.min(100, Math.max(0, p.existencias / escala * 100))}%` }),
+        el("span", { class: "minimo", style: `left:${p.minimo / escala * 100}%` })),
+      el("div", { class: "pie-cajon" },
+        el("span", { text: `Mínimo ${p.minimo} · ${pesos(p.costo)} c/u` }),
+        el("span", { class: "etiqueta " + (agotado ? "tono-rech" : bajo ? "tono-alerta" : "tono-ok"), text: estadoTxt })),
+      el("button", { class: "boton boton-suave", type: "button", text: "Despachar este producto",
+        onclick: () => { mostrarVista("registro"); $("#producto").value = p.codigo; actualizarPrevia(); $("#cantidad").focus(); } })
+    );
+  }));
+}
+$("#btn-recargar-inv").addEventListener("click", () => cargarInventario().then(pintarInventario));
+
+/* ================= Registro: selects ================= */
+function llenarSelectsFijos() {
+  $("#solicitante").replaceChildren(...CONFIG.SOLICITANTES.map((s, i) =>
+    el("option", { value: String(i), text: `${s.nombre} (${s.cargo})` })));
+  $("#destino").replaceChildren(
+    el("option", { value: "", text: "Elige el destino", disabled: true, selected: true }),
+    ...CONFIG.DESTINOS.map((d) => el("option", { value: d, text: d })));
+  mostrarCorreo();
+}
+
+function llenarProductos() {
+  const sel = $("#producto");
+  const actual = sel.value;
+  sel.replaceChildren(
+    el("option", { value: "", text: "Elige un producto", disabled: true, selected: !actual }),
+    ...estado.inventario.map((p) => el("option", { value: p.codigo,
+      text: `${p.codigo}  ${p.producto} (${entero(p.existencias)} ${plural(p.unidad, p.existencias)})` })),
+    el("option", { value: "__otro__", text: "Otro código que no está en la lista" })
+  );
+  if (actual) sel.value = actual;
+}
+
+function mostrarCorreo() {
+  const s = CONFIG.SOLICITANTES[Number($("#solicitante").value)] || CONFIG.SOLICITANTES[0];
+  $("#correo-solicitante").textContent = s ? "La confirmación llega a " + s.correo : "";
+}
+
+function productoElegido() {
+  const v = $("#producto").value;
+  if (!v) return null;
+  if (v === "__otro__") {
+    const codigo = $("#otro-codigo").value.trim().toUpperCase();
+    const p = estado.inventario.find((x) => x.codigo === codigo);
+    return p ? p : { codigo, noExiste: true };
+  }
+  return estado.inventario.find((x) => x.codigo === v) || { codigo: v, noExiste: true };
+}
+
+/* ================= Vista previa con la regla de rutas ================= */
+function regla(existencias, minimo, saldo) {
+  const bajo = Math.min(saldo, 0);
+  const lo = bajo - Math.max(3, Math.abs(bajo) * 0.3);
+  const hi = Math.max(existencias, minimo, saldo) * 1.15 + 3;
+  const pct = (x) => ((x - lo) / (hi - lo)) * 100;
+  return el("div", { class: "regla", role: "img",
+      "aria-label": `Existencias ${existencias}, saldo estimado ${saldo}, mínimo ${minimo}` },
+    el("div", { class: "regla-pista" },
+      el("span", { class: "zona zona-rech", style: `width:${pct(0)}%` }),
+      el("span", { class: "zona zona-alerta", style: `width:${pct(minimo) - pct(0)}%` }),
+      el("span", { class: "zona zona-ok", style: `width:${100 - pct(minimo)}%` }),
+      el("span", { class: "marca-hoy", style: `left:${pct(existencias)}%`, title: "Existencias hoy" }),
+      el("span", { class: "marca-saldo", style: `left:${pct(saldo)}%`, title: "Saldo después del despacho" })),
+    el("div", { class: "regla-ejes" },
+      el("span", { style: `left:${pct(0)}%`, text: "0" }),
+      el("span", { style: `left:${pct(minimo)}%`, text: `mínimo ${minimo}` }),
+      el("span", { style: `left:${pct(existencias)}%;top:12px`, text: `hoy ${existencias}` }))
+  );
+}
+
+function actualizarPrevia() {
+  const caja = $("#previa");
+  const v = $("#producto").value;
+  $("#campo-otro").hidden = v !== "__otro__";
+  const p = productoElegido();
+  const q = parseInt($("#cantidad").value, 10);
+  $("#unidad").textContent = p && p.unidad ? plural(p.unidad, q) : "unidades";
+
+  if (!p) { caja.replaceChildren(el("p", { class: "previa-vacia", text: "Elige un producto para ver cuánto quedaría y por qué ruta saldría el despacho." })); return; }
+  if (p.noExiste) {
+    caja.replaceChildren(el("div", { class: "veredicto tono-nov" },
+      p.codigo ? `${p.codigo} no está en el inventario.` : "Escribe el código que quieres probar.",
+      el("small", { text: "Make no lo va a encontrar, así que el pedido irá a la ruta de respaldo y quedará como incidente." })));
+    return;
+  }
+  const ficha = [
+    el("div", { class: "ficha" }, el("div", {}, el("h4", { text: p.producto }), el("span", { class: "codigo", text: p.codigo }))),
+    el("div", { class: "datos-ficha" },
+      el("div", { class: "dato" }, el("span", { text: "Existencias" }), el("b", { text: entero(p.existencias) })),
+      el("div", { class: "dato" }, el("span", { text: "Mínimo" }), el("b", { text: entero(p.minimo) })),
+      el("div", { class: "dato" }, el("span", { text: "Costo unitario" }), el("b", { text: pesos(p.costo) })))
+  ];
+  if (!Number.isFinite(q) || q < 1) {
+    caja.replaceChildren(...ficha, el("p", { class: "previa-vacia", text: "Indica una cantidad de al menos 1." }));
+    return;
+  }
+  const saldo = p.existencias - q;
+  const ruta = saldo < 0 ? "RECHAZADO" : saldo < p.minimo ? "APROBADO_ALERTA" : "APROBADO";
+  const u = (n) => plural(p.unidad, n);
+  const frases = {
+    APROBADO: `Quedarían ${saldo} ${u(saldo)}, por encima del mínimo de ${p.minimo}. Debería salir aprobado.`,
+    APROBADO_ALERTA: `Quedarían ${saldo} ${u(saldo)}, por debajo del mínimo de ${p.minimo}. Debería salir aprobado y avisar a compras.`,
+    RECHAZADO: `Faltan ${-saldo} ${u(-saldo)}: hay ${p.existencias} y pides ${q}. Debería rechazarse sin escribir nada.`
+  };
+  caja.replaceChildren(...ficha,
+    regla(p.existencias, p.minimo, saldo),
+    el("div", { class: "veredicto tono-" + RUTAS[ruta].tono }, frases[ruta],
+      el("small", { text: "Es una estimación con el inventario que ves ahora. La decisión la toma Make al registrar." })));
+}
+
+/* ================= Registro: eventos ================= */
+$("#solicitante").addEventListener("change", mostrarCorreo);
+$("#producto").addEventListener("change", () => { actualizarPrevia(); if ($("#producto").value === "__otro__") $("#otro-codigo").focus(); });
+$("#otro-codigo").addEventListener("input", actualizarPrevia);
+$("#cantidad").addEventListener("input", actualizarPrevia);
+$("#menos").addEventListener("click", () => { const c = $("#cantidad"); c.value = Math.max(1, (parseInt(c.value, 10) || 1) - 1); actualizarPrevia(); });
+$("#mas").addEventListener("click", () => { const c = $("#cantidad"); c.value = (parseInt(c.value, 10) || 0) + 1; actualizarPrevia(); });
+
+$$(".caso").forEach((b) => b.addEventListener("click", () => {
+  const codigo = b.dataset.codigo;
+  const existe = estado.inventario.some((p) => p.codigo === codigo);
+  $("#producto").value = existe ? codigo : "__otro__";
+  $("#otro-codigo").value = existe ? "" : codigo;
+  $("#cantidad").value = b.dataset.cantidad;
+  $("#m-despacho").checked = true;
+  if (!$("#destino").value) $("#destino").selectedIndex = 1;
+  actualizarPrevia();
+  $("#btn-registrar").focus();
+}));
+
+$("#btn-limpiar").addEventListener("click", () => {
+  $("#form-despacho").reset();
+  llenarSelectsFijos(); llenarProductos();
+  $("#producto").value = ""; $("#otro-codigo").value = ""; $("#cantidad").value = 1;
+  $("#aviso-form").textContent = "";
+  actualizarPrevia();
+});
+
+/* ================= Recorrido y resultado ================= */
+function pintarRecorrido(modo, resultado) {
+  const pasos = $$("#recorrido li");
+  pasos.forEach((li) => { li.className = ""; });
+  const fin = $("#recorrido-fin");
+  if (modo === "esperando") {
+    pasos[0].classList.add("hecho"); pasos[1].classList.add("activo");
+    fin.textContent = "Esperando a Make";
+  } else if (modo === "listo") {
+    pasos.slice(0, 5).forEach((li) => li.classList.add("hecho"));
+    const r = RUTAS[resultado];
+    pasos[5].classList.add("fin-" + (r ? r.tono : "nov"));
+    fin.textContent = r ? r.corto : resultado;
+  } else if (modo === "error") {
+    pasos[0].classList.add("hecho"); pasos[1].classList.add("fallo");
+    fin.textContent = "Sin respuesta";
+  } else fin.textContent = "Ruta";
+}
+
+function pintarResultado(data, datos, ms) {
+  const r = RUTAS[data.resultado] || { titulo: data.resultado, tono: "nov", acciones: [] };
+  const caja = $("#resultado");
+  caja.className = "resultado tono-" + r.tono;
+  const unidad = data.unidad || (estado.inventario.find((p) => p.codigo === datos.codigo_producto) || {}).unidad || "";
+  const cifras = [
+    ["Producto", data.producto || datos.codigo_producto],
+    ["Cantidad", `${datos.cantidad} ${plural(unidad, Number(datos.cantidad))}`]
+  ];
+  if (data.saldo_anterior !== undefined && data.saldo_resultante !== undefined)
+    cifras.push(["Existencias", `${data.saldo_anterior} pasan a ${data.saldo_resultante}`]);
+  else if (data.saldo_resultante !== undefined) cifras.push(["Saldo", String(data.saldo_resultante)]);
+  if (data.minimo !== undefined) cifras.push(["Mínimo", String(data.minimo)]);
+  if (data.id_movimiento) cifras.push(["Movimiento", data.id_movimiento]);
+  if (Number(data.valor_total) > 0) cifras.push(["Valor", pesos(Number(data.valor_total))]);
+  cifras.push(["Respondió en", (ms / 1000).toFixed(1) + " s"]);
+  caja.replaceChildren(
+    el("h3", { text: r.titulo }),
+    el("p", { class: "mensaje", text: data.mensaje || "" }),
+    el("div", { class: "cifras" }, ...cifras.map(([k, v]) => el("div", { class: "cifra" }, el("span", { text: k }), el("b", { text: v })))),
+    el("ul", { class: "lista-acciones", "aria-label": "Qué hizo el escenario" },
+      ...r.acciones.map(([t, txt]) => el("li", {}, icono(t), el("span", { text: txt }))))
+  );
+  caja.hidden = false;
+}
+
+function pintarError(titulo, detalle) {
+  const caja = $("#resultado");
+  caja.className = "resultado tono-rech";
+  caja.replaceChildren(el("h3", { text: titulo }), el("p", { class: "mensaje", text: detalle }));
+  caja.hidden = false;
+}
+
+function agregarSesion(datos, data, ms) {
+  estado.sesion.unshift({ hora: formatoBogota(new Date()).slice(11), datos, data, ms });
+  $("#cuerpo-sesion").replaceChildren(...estado.sesion.map((s) => el("tr", {},
+    el("td", { text: s.hora }),
+    el("td", { text: s.data && s.data.producto ? `${s.datos.codigo_producto}  ${s.data.producto}` : s.datos.codigo_producto }),
+    el("td", { class: "num", text: s.datos.cantidad }),
+    el("td", {}, s.data ? etiquetaResultado(s.data.resultado) : el("span", { class: "etiqueta tono-rech", text: "Sin respuesta" })),
+    el("td", { class: "num", text: s.data && s.data.saldo_resultante !== undefined ? s.data.saldo_resultante : "" }),
+    el("td", { class: "num", text: (s.ms / 1000).toFixed(1) + " s" })
+  )));
+}
+
+/* ================= Envío al webhook ================= */
+$("#form-despacho").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const aviso = $("#aviso-form");
+  aviso.textContent = "";
+  const p = productoElegido();
+  const q = parseInt($("#cantidad").value, 10);
+  const sol = CONFIG.SOLICITANTES[Number($("#solicitante").value)];
+  const motivo = ($("input[name='motivo']:checked") || {}).value;
+  if (!sol) return (aviso.textContent = "Elige el solicitante.");
+  if (!$("#destino").value) return (aviso.textContent = "Elige el destino.");
+  if (!p || !p.codigo) return (aviso.textContent = "Elige el producto.");
+  if (!Number.isFinite(q) || q < 1) return (aviso.textContent = "La cantidad debe ser 1 o más.");
+  if (!CONFIG.WEBHOOK_URL) return pintarError("Falta el webhook", "Pega la URL del webhook de Make en CONFIG.WEBHOOK_URL.");
+
+  const datos = {
+    solicitante: sol.nombre,
+    correo: sol.correo,
+    codigo_producto: p.codigo,
+    cantidad: String(q),
+    destino: $("#destino").value,
+    motivo,
+    fecha_hora_solicitud: formatoBogota(new Date())
+  };
+
+  const boton = $("#btn-registrar");
+  boton.disabled = true; boton.textContent = "Registrando…";
+  $("#resultado").hidden = true;
+  pintarRecorrido("esperando");
+  const t0 = performance.now();
+  const control = new AbortController();
+  const limite = setTimeout(() => control.abort(), 45000);
+  try {
+    // Formulario codificado: el navegador no hace la consulta previa (preflight) de CORS.
+    const resp = await fetch(CONFIG.WEBHOOK_URL, { method: "POST", body: new URLSearchParams(datos), signal: control.signal });
+    const texto = (await resp.text()).trim();
+    const ms = performance.now() - t0;
+    let data = null;
+    try { data = JSON.parse(texto); } catch (_) { /* no es JSON */ }
+    if (data && data.resultado) {
+      pintarRecorrido("listo", data.resultado);
+      pintarResultado(data, datos, ms);
+      agregarSesion(datos, data, ms);
+      estado.historialViejo = true;
+      cargarInventario();
+    } else if (/^accepted$/i.test(texto)) {
+      pintarRecorrido("error");
+      pintarError("El escenario está apagado", "Make recibió el pedido pero no lo procesó. Activa el escenario («Immediately as data arrives») y vuelve a registrar. El pedido quedó en la cola del webhook: vacíala si no quieres que se procese después.");
+      agregarSesion(datos, null, ms);
+    } else {
+      pintarRecorrido("error");
+      pintarError("Make respondió algo inesperado", (texto || "(respuesta vacía)").slice(0, 240));
+      agregarSesion(datos, null, ms);
+    }
+  } catch (err) {
+    const ms = performance.now() - t0;
+    pintarRecorrido("error");
+    pintarError("No hubo respuesta de Make", err.name === "AbortError"
+      ? "El escenario tardó más de 45 segundos. Revisa su historial de ejecuciones."
+      : "Revisa que el escenario esté activo y que cada módulo de respuesta envíe el encabezado Access-Control-Allow-Origin: *.");
+    agregarSesion(datos, null, ms);
+  } finally {
+    clearTimeout(limite);
+    boton.disabled = false; boton.textContent = "Registrar despacho";
+  }
+});
+
+/* ================= Historial ================= */
+async function cargarHistorial(forzar) {
+  if (!forzar && !estado.historialViejo) { pintarHistorial(); return; }
+  const cuerpo = $("#cuerpo-historial");
+  cuerpo.replaceChildren(el("tr", {}, el("td", { colspan: "9", class: "vacio", text: "Cargando movimientos…" })));
+  if (!CONFIG.SHEET_ID) {
+    cuerpo.replaceChildren(el("tr", {}, el("td", { colspan: "9", class: "vacio", text: "Falta el ID de la hoja en CONFIG.SHEET_ID." })));
+    return;
+  }
+  try {
+    const [mov, inc] = await Promise.all([
+      leerHoja(CONFIG.HOJAS.movimientos, "resultado"),
+      leerHoja(CONFIG.HOJAS.incidentes, "detalle").catch(() => [])
+    ]);
+    estado.movimientos = mov;
+    estado.incidentes = inc;
+    estado.historialViejo = false;
+    llenarFiltroProductos();
+    pintarHistorial();
+  } catch (err) {
+    cuerpo.replaceChildren(el("tr", {}, el("td", { colspan: "9", class: "vacio",
+      text: "No se pudo leer la hoja: " + err.message + ". Revisa que esté compartida como «Cualquier persona con el enlace, lector»." })));
+  }
+}
+
+function llenarFiltroProductos() {
+  const sel = $("#f-producto");
+  const actual = sel.value;
+  const codigos = [...new Set(estado.movimientos.map((m) => m.codigo_producto).filter(Boolean))].sort();
+  sel.replaceChildren(el("option", { value: "", text: "Todos" }),
+    ...codigos.map((c) => {
+      const m = estado.movimientos.find((x) => x.codigo_producto === c);
+      return el("option", { value: c, text: `${c}  ${m && m.producto ? m.producto : ""}` });
+    }));
+  sel.value = actual;
+}
+
+function filtrados() {
+  const fr = $("#f-resultado").value, fp = $("#f-producto").value, fm = $("#f-motivo").value;
+  const ft = $("#f-texto").value.trim().toLowerCase();
+  return estado.movimientos
+    .map((m, i) => ({ m, i, t: leerFecha(m.fecha_hora_respuesta) }))
+    .filter(({ m }) => (!fr || m.resultado === fr) && (!fp || m.codigo_producto === fp) && (!fm || m.motivo === fm) &&
+      (!ft || `${m.solicitante} ${m.destino}`.toLowerCase().includes(ft)))
+    .sort((a, b) => (b.t ? b.t.getTime() : 0) - (a.t ? a.t.getTime() : 0) || b.i - a.i)
+    .map((x) => x.m);
+}
+
+function barras(lista, destino, formato) {
+  const max = Math.max(1, ...lista.map((x) => x[1]));
+  destino.replaceChildren(...(lista.length ? lista.map(([nombre, valor]) => el("li", {},
+    el("span", { text: nombre }),
+    el("span", { class: "pista" }, el("span", { class: "relleno", style: `display:block;width:${valor / max * 100}%` })),
+    el("b", { text: formato ? formato(valor) : entero(valor) }))) : [el("li", { class: "vacio", text: "Sin datos todavía." })]));
+}
+
+function pintarHistorial() {
+  const mov = estado.movimientos;
+  // Indicadores (siempre sobre todos los movimientos)
+  $("#k-total").textContent = entero(mov.length);
+  const tiempos = mov.map((m) => {
+    const a = leerFecha(m.fecha_hora_solicitud), b = leerFecha(m.fecha_hora_respuesta);
+    return a && b && b >= a ? (b - a) / 1000 : null;
+  }).filter((x) => x !== null);
+  if (tiempos.length) {
+    const prom = tiempos.reduce((s, x) => s + x, 0) / tiempos.length;
+    $("#k-tiempo").textContent = prom.toFixed(1).replace(".", ",") + " s";
+    $("#k-tiempo-nota").textContent = `promedio de ${tiempos.length} despachos; antes eran 43 min`;
+  } else { $("#k-tiempo").textContent = "–"; }
+  const aprobados = mov.filter((m) => m.resultado === "APROBADO" || m.resultado === "APROBADO_ALERTA");
+  const alerta = aprobados.filter((m) => m.resultado === "APROBADO_ALERTA").length;
+  $("#k-alerta").textContent = aprobados.length ? Math.round(alerta / aprobados.length * 100) + " %" : "–";
+  const conValor = mov.filter((m) => Number.isFinite(numero(m.valor_total)));
+  if (conValor.length) {
+    $("#k-valor").textContent = pesos(conValor.reduce((s, m) => s + numero(m.valor_total), 0));
+    $("#k-valor-nota").textContent = "cantidad × costo unitario";
+  } else {
+    $("#k-valor").textContent = entero(mov.reduce((s, m) => s + (numero(m.cantidad) || 0), 0));
+    $("#k-valor-nota").textContent = "unidades despachadas";
+  }
+
+  // Gráficos
+  const porProducto = {};
+  mov.forEach((m) => { const k = m.producto || m.codigo_producto; porProducto[k] = (porProducto[k] || 0) + (numero(m.cantidad) || 0); });
+  barras(Object.entries(porProducto).sort((a, b) => b[1] - a[1]), $("#g-productos"));
+  const porMotivo = {};
+  mov.forEach((m) => { const k = m.motivo || "sin motivo"; porMotivo[k] = (porMotivo[k] || 0) + 1; });
+  barras(Object.entries(porMotivo).sort((a, b) => b[1] - a[1]), $("#g-motivos"));
+
+  // Tabla
+  const lista = filtrados();
+  const cuerpo = $("#cuerpo-historial");
+  if (!lista.length) {
+    cuerpo.replaceChildren(el("tr", {}, el("td", { colspan: "9", class: "vacio",
+      text: mov.length ? "Ningún movimiento coincide con los filtros." : "Todavía no hay movimientos. Registra un despacho y aparecerá aquí." })));
+  } else {
+    cuerpo.replaceChildren(...lista.flatMap((m) => {
+      const detalle = el("tr", { class: "detalle", hidden: true },
+        el("td", { colspan: "9" }, el("div", { class: "detalle-grid" },
+          ...Object.entries(m).filter(([, v]) => v !== "").map(([k, v]) =>
+            el("div", {}, el("span", { text: k }), el("b", { text: k.startsWith("fecha") ? mostrarFecha(v) : v }))))));
+      const fila = el("tr", { class: "fila-mov", tabindex: "0", "aria-expanded": "false" },
+        el("td", { text: mostrarFecha(m.fecha_hora_respuesta) }),
+        el("td", { text: m.id_movimiento }),
+        el("td", { text: `${m.codigo_producto}  ${m.producto || ""}` }),
+        el("td", { class: "num", text: `${m.cantidad} ${plural(m.unidad, numero(m.cantidad))}` }),
+        el("td", { class: "num", text: m.saldo_anterior ? `${m.saldo_anterior} a ${m.saldo_resultante}` : m.saldo_resultante }),
+        el("td", { text: m.destino }),
+        el("td", { text: m.motivo }),
+        el("td", { text: m.solicitante }),
+        el("td", {}, etiquetaResultado(m.resultado)));
+      const alternar = () => { const abierto = fila.getAttribute("aria-expanded") === "true"; fila.setAttribute("aria-expanded", String(!abierto)); detalle.hidden = abierto; };
+      fila.addEventListener("click", alternar);
+      fila.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); alternar(); } });
+      return [fila, detalle];
+    }));
+  }
+  $("#pie-historial").textContent = `Mostrando ${lista.length} de ${mov.length} movimientos. Fuente: pestaña movimientos de la hoja BD_LaQuinta, la misma que escribe Make.`;
+
+  // Incidentes
+  const inc = estado.incidentes.slice().reverse();
+  $("#cuerpo-incidentes").replaceChildren(...(inc.length ? inc.map((x) => el("tr", {},
+    el("td", { text: mostrarFecha(x.fecha_hora) }),
+    el("td", { text: x.codigo_producto }),
+    el("td", { class: "num", text: x.cantidad }),
+    el("td", { text: x.solicitante }),
+    el("td", { text: x.destino }),
+    el("td", { text: x.detalle }))) : [el("tr", {}, el("td", { colspan: "6", class: "vacio", text: "Sin incidentes registrados." }))]));
+}
+
+["#f-resultado", "#f-producto", "#f-motivo"].forEach((s) => $(s).addEventListener("change", pintarHistorial));
+$("#f-texto").addEventListener("input", pintarHistorial);
+$("#btn-limpiar-filtros").addEventListener("click", () => { ["#f-resultado", "#f-producto", "#f-motivo", "#f-texto"].forEach((s) => { $(s).value = ""; }); pintarHistorial(); });
+$("#btn-recargar-hist").addEventListener("click", () => cargarHistorial(true));
+
+$("#btn-exportar").addEventListener("click", () => {
+  const lista = filtrados();
+  if (!lista.length) return;
+  const columnas = Object.keys(estado.movimientos[0]);
+  const esc = (v) => `"${String(v === undefined ? "" : v).replace(/"/g, '""')}"`;
+  const csv = [columnas.map(esc).join(","), ...lista.map((m) => columnas.map((c) => esc(m[c])).join(","))].join("\r\n");
+  const url = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }));
+  const a = el("a", { href: url, download: "movimientos_la_quinta.csv" });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+/* ================= Arranque ================= */
+llenarSelectsFijos();
+llenarProductos();
+pintarEstados();
+actualizarPrevia();
+cargarInventario();
+</script>
+</body>
+</html>
